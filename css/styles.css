@@ -1,12 +1,26 @@
-
-
-
+#browse-carousel {
+	max-width: 300px;
+	margin:auto;
+}
 
 .jumbotron {
 	text-align: center;
 	margin-bottom: 1%;
 }
 
+.well {
+	background: red;
+	color: white;
+	border-width: 0px;
+	
+}
+
+#add-to-watchlist {
+	width: 100px;
+}
+.carousel-inner {
+	padding-left: 0px;
+}
 
 #section-watchlist li {
 	padding: 0px;

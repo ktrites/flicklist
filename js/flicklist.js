@@ -2,16 +2,14 @@
 
 var model = {
   watchlistItems: [],
-  browseItems: []
-
-  // TODO 
-  // add a property for the current active movie index
+  browseItems: [],
+  activeMovieIndex: 0
 }
 
 
 var api = {
   root: "https://api.themoviedb.org/3",
-  token: "8e888fa39ec243e662e1fb738c42ae99", // TODO 0 add your api key
+  token: "9998669cfab84d19ba8945ad0337207e", 
   /**
    * Given a movie object, returns the url to its poster image
    */
@@ -121,8 +119,42 @@ function render() {
 
     $("#section-watchlist ul").append(itemView);
   });
+  
+  var activeMovie = model.browseItems[model.activeMovieIndex];
+  
+  $("#browse-info h4").text(activeMovie.orginal_title);
+  $("#browse-info p").text(activeMovie.overview);
+  
+  $("#add-to-watchlist")
+    .attr("class", "btn btn-primary")
+    .click(function(){
+      model.watchlistItems.push(activeMovie);
+      render();
+    })
+    .prop("disabled", model.watchlistItems.indexOf(activeMovie) !== -1);
 
-  // render browse items
+  var posters = model.browseItems.map(function(movie) {
+    
+    var poster = $("<img></img>")
+      .attr("src", api.posterUrl(movie))
+      .attr("class", "img-responsive");
+      
+    return $("<li></li>")
+    .attr("class", "item")
+    .append(poster);
+  });
+  $("#section-browse.carousel-inner").append(posters);
+  posters[model.activeMovieIndex].addClass("active");
+}
+  
+
+// When the HTML document is ready, we call the discoverMovies function,
+// and pass the render function as its callback
+$(document).ready(function() {
+  discoverMovies(render);
+});
+
+/*// render browse items
   model.browseItems.forEach(function(movie) {
     var title = $("<h4></h4>").text(movie.original_title);
     var overview = $("<p></p>").text(movie.overview);
@@ -145,10 +177,4 @@ function render() {
     $("#section-browse ul").append(itemView);
   });
 }
-
-
-// When the HTML document is ready, we call the discoverMovies function,
-// and pass the render function as its callback
-$(document).ready(function() {
-  discoverMovies(render);
-});
+*/
